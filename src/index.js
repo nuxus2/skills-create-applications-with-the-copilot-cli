@@ -12,6 +12,8 @@
 //   node src/index.js 2 + 3
 //   node src/index.js 10 / 4
 
+const { compute } = require('./calculator');
+
 const [,, leftArg, opArg, rightArg] = process.argv;
 
 function printUsage() {
@@ -36,37 +38,10 @@ if (Number.isNaN(left) || Number.isNaN(right)) {
   process.exit(1);
 }
 
-let result;
-switch (op) {
-  case '+':
-  case 'add':
-    result = left + right;
-    break;
-  case '-':
-  case 'sub':
-  case 'subtract':
-    result = left - right;
-    break;
-  case '*':
-  case 'x':
-  case 'X':
-  case 'mul':
-  case 'multiply':
-    result = left * right;
-    break;
-  case '/':
-  case 'div':
-  case 'divide':
-    if (right === 0) {
-      console.error('Error: division by zero');
-      process.exit(1);
-    }
-    result = left / right;
-    break;
-  default:
-    console.error(`Error: unsupported operator '${op}'.`);
-    printUsage();
-    process.exit(1);
+try {
+  const result = compute(op, left, right);
+  console.log(result);
+} catch (err) {
+  console.error('Error:', err.message);
+  process.exit(1);
 }
-
-console.log(result);
