@@ -35,7 +35,12 @@ function divide(a, b) {
 // Compute supports the four basic operations over a list of numbers.
 // For add/mul all numbers are combined. For sub/div the operation is
 // applied left-to-right starting from the first argument.
-function compute(op, numbers) {
+function compute(op, ...numbers) {
+  // Allow either compute(op, [a, b, c]) or compute(op, a, b, c)
+  if (numbers.length === 1 && Array.isArray(numbers[0])) {
+    numbers = numbers[0];
+  }
+
   if (!Array.isArray(numbers) || numbers.length === 0) {
     throw new Error('No numbers provided');
   }
@@ -62,7 +67,7 @@ function compute(op, numbers) {
       }
       return numbers.slice(1).reduce((a, b) => a / b, numbers[0]);
     default:
-      throw new Error(`Unsupported operation: ${op}`);
+      throw new Error(`Unsupported operator: ${op}`);
   }
 }
 
