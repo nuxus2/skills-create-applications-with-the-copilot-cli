@@ -1,82 +1,61 @@
-#!/usr/bin/env node
+/*
+ Calculator module
 
-/**
- * Node.js CLI Calculator
- * 
- * Supported Operations:
- * - add: Addition
- * - sub: Subtraction
- * - mul: Multiplication
- * - div: Division
- * 
- * Usage:
- *   node calculator.js add 2 3        # outputs 5
- *   node calculator.js sub 5 2        # outputs 3
- *   node calculator.js mul 3 4        # outputs 12
- *   node calculator.js div 10 2       # outputs 5
- */
+ Supported operations:
+ - Addition (+)
+ - Subtraction (-)
+ - Multiplication (*)
+ - Division (/)
+ - Modulo (%)
+ - Exponentiation (power)
+ - Square root (sqrt)
+*/
 
-const args = process.argv.slice(2);
-
-// Display help if no arguments provided
-if (args.length === 0) {
-  console.log('Usage: calculator.js <operation> <num1> <num2>');
-  console.log('');
-  console.log('Operations:');
-  console.log('  add  - Addition');
-  console.log('  sub  - Subtraction');
-  console.log('  mul  - Multiplication');
-  console.log('  div  - Division');
-  console.log('');
-  console.log('Examples:');
-  console.log('  node calculator.js add 10 5');
-  console.log('  node calculator.js sub 10 5');
-  console.log('  node calculator.js mul 10 5');
-  console.log('  node calculator.js div 10 5');
-  process.exit(0);
+// Parse arguments to numbers and validate
+function toNumber(value) {
+  const n = Number(value);
+  if (Number.isNaN(n)) throw new Error(`Invalid number: ${value}`);
+  return n;
 }
 
-const operation = args[0];
-const num1 = parseFloat(args[1]);
-const num2 = parseFloat(args[2]);
-
-// Validate numeric input
-if (isNaN(num1) || isNaN(num2)) {
-  console.error('Error: Both arguments must be valid numbers');
-  process.exit(1);
+function add(a, b) {
+  return a + b;
 }
 
-let result;
-
-// Perform the requested operation
-switch (operation.toLowerCase()) {
-  case 'add':
-    // Addition operation
-    result = num1 + num2;
-    break;
-  
-  case 'sub':
-    // Subtraction operation
-    result = num1 - num2;
-    break;
-  
-  case 'mul':
-    // Multiplication operation
-    result = num1 * num2;
-    break;
-  
-  case 'div':
-    // Division operation
-    if (num2 === 0) {
-      console.error('Error: Cannot divide by zero');
-      process.exit(1);
-    }
-    result = num1 / num2;
-    break;
-  
-  default:
-    console.error(`Error: Unknown operation '${operation}'. Supported operations: add, sub, mul, div`);
-    process.exit(1);
+function subtract(a, b) {
+  return a - b;
 }
 
-console.log(result);
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  if (b === 0) throw new Error('Division by zero');
+  return a / b;
+}
+
+function modulo(a, b) {
+  if (b === 0) throw new Error('Modulo by zero');
+  return a % b;
+}
+
+function power(base, exponent) {
+  return Math.pow(base, exponent);
+}
+
+function squareRoot(n) {
+  if (n < 0) throw new Error('Square root of negative number');
+  return Math.sqrt(n);
+}
+
+module.exports = {
+  toNumber,
+  add,
+  subtract,
+  multiply,
+  divide,
+  modulo,
+  power,
+  squareRoot,
+};
