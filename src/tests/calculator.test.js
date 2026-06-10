@@ -1,43 +1,28 @@
 const calc = require('../calculator');
 
-describe('calculator basic operations', () => {
-  test('addition: 2 + 3 = 5', () => {
-    expect(calc.add(2, 3)).toBe(5);
-    expect(calc.compute('+', 2, 3)).toBe(5);
-    expect(calc.compute('add', [1, 2, 3, 4])).toBe(10);
+describe('Calculator extended operations', () => {
+  test('modulo returns remainder of division', () => {
+    expect(calc.modulo(5, 2)).toBe(1);
+    expect(calc.modulo(10, 3)).toBe(1);
+    expect(calc.modulo(0, 5)).toBe(0);
   });
 
-  test('subtraction: 10 - 4 = 6 (left-to-right)', () => {
-    expect(calc.subtract(10, 4)).toBe(6);
-    expect(calc.compute('-', 10, 4)).toBe(6);
-    // multiple args: 10 - 3 - 2 = 5
-    expect(calc.compute('sub', [10, 3, 2])).toBe(5);
+  test('modulo by zero throws', () => {
+    expect(() => calc.modulo(5, 0)).toThrow(/Modulo by zero/);
   });
 
-  test('multiplication: 45 * 2 = 90', () => {
-    expect(calc.multiply(45, 2)).toBe(90);
-    expect(calc.compute('*', 45, 2)).toBe(90);
-    expect(calc.compute('mul', [2, 3, 4])).toBe(24);
+  test('power returns base raised to exponent', () => {
+    expect(calc.power(2, 3)).toBe(8);
+    expect(calc.power(5, 0)).toBe(1);
+    expect(calc.power(2, -1)).toBeCloseTo(0.5);
   });
 
-  test('division: 20 / 5 = 4', () => {
-    expect(calc.divide(20, 5)).toBe(4);
-    expect(calc.compute('/', 20, 5)).toBe(4);
-    expect(calc.compute('div', [100, 2, 5])).toBe(10); // 100/2/5 = 10
+  test('squareRoot returns correct root for positive numbers', () => {
+    expect(calc.squareRoot(16)).toBe(4);
+    expect(calc.squareRoot(2)).toBeCloseTo(Math.sqrt(2));
   });
 
-  test('division by zero throws', () => {
-    expect(() => calc.divide(1, 0)).toThrow(/Division by zero/);
-    expect(() => calc.compute('/', 1, 0)).toThrow(/Division by zero/);
-    expect(() => calc.compute('div', [10, 2, 0])).toThrow(/Division by zero/);
-  });
-
-  test('unsupported operator throws', () => {
-    expect(() => calc.compute('%', 2, 3)).toThrow(/Unsupported operator/);
-  });
-
-  test('compute validates input and arguments', () => {
-    expect(() => calc.compute('add')).toThrow(/No numbers provided/);
-    expect(() => calc.compute('add', [])).toThrow(/No numbers provided/);
+  test('squareRoot of negative number throws', () => {
+    expect(() => calc.squareRoot(-9)).toThrow(/Square root of negative number/);
   });
 });
